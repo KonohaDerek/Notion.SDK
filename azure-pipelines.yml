@@ -1,18 +1,10 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-variables: # pipeline-level
-  branch: 'main'
+#Your build pipeline references an undefined variable named ‘PAT’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references an undefined variable named ‘branch’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references an undefined variable named ‘branch’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
 
-trigger:
-- main
-
-pool:
-  vmImage: 'ubuntu-latest'
 steps:
 - script: |
-   git remote add github https://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@github.com/KonohaDerek/Notion.SDK.git
+   git remote add github https://$(PAT)@github.com/KonohaDerek/Notion.SDK.git
    git checkout -b $(branch)
    git push -u github $(branch)
-  displayName: 'Sync To Github'
+  displayName: 'Command Line Script'

@@ -12,7 +12,7 @@ pool:
   vmImage: 'ubuntu-latest'
 steps:
 - script: |
-   git remote add github https://KonohaDerek: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@github.com/KonohaDerek/Notion.SDK.git
+   git remote add github https://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@github.com/KonohaDerek/Notion.SDK.git
    git checkout -b $(branch)
    git push -u github $(branch)
   displayName: 'Sync To Github'

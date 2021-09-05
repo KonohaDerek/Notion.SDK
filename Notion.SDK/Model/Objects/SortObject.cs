@@ -1,7 +1,7 @@
 ﻿using Notion.SDK.Model.Enums;
 using System.Text.Json.Serialization;
 
-namespace Notion.SDK.Model.Notions
+namespace Notion.SDK.Model.Objects
 {
     public class SortObject
     {

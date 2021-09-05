@@ -3,7 +3,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31612.314
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notion.SDK", "Notion.SDK\Notion.SDK.csproj", "{EEA73C69-F813-4A4E-A77A-EBA07CAF0186}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notion.SDK", "Notion.SDK\Notion.SDK.csproj", "{EEA73C69-F813-4A4E-A77A-EBA07CAF0186}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{F51D19D5-31C7-4579-B663-F066C91D8011}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{80FE91CC-1215-49EB-B96A-31EA82C08C9B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{992F22E5-74C1-4AF2-919E-9F333DAAE2EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notion.SDKTests", "Notion.SDKTests\Notion.SDKTests.csproj", "{F1743B81-C5EF-4FCA-A00E-3E6637540E9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +28,17 @@ Global
 		{EEA73C69-F813-4A4E-A77A-EBA07CAF0186}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEA73C69-F813-4A4E-A77A-EBA07CAF0186}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEA73C69-F813-4A4E-A77A-EBA07CAF0186}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1743B81-C5EF-4FCA-A00E-3E6637540E9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1743B81-C5EF-4FCA-A00E-3E6637540E9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1743B81-C5EF-4FCA-A00E-3E6637540E9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1743B81-C5EF-4FCA-A00E-3E6637540E9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EEA73C69-F813-4A4E-A77A-EBA07CAF0186} = {80FE91CC-1215-49EB-B96A-31EA82C08C9B}
+		{F1743B81-C5EF-4FCA-A00E-3E6637540E9A} = {992F22E5-74C1-4AF2-919E-9F333DAAE2EA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9EC4DFE7-9D71-4D1D-B533-0E3F018607D7}

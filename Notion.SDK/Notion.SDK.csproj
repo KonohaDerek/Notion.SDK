@@ -6,8 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Model\Response\" />
+    <Folder Include="Attributes\" />
     <Folder Include="Exceptions\" />
+    <Folder Include="Model\Filters\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RestClient" Version="3.446.20952" />
   </ItemGroup>
 
 </Project>

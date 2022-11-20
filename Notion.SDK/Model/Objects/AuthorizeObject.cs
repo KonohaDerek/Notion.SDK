@@ -13,7 +13,7 @@ namespace Notion.SDK.Model.Objects
         /// <value></value>
 
         [JsonPropertyName("access_token")]
-        public string AccessToken { get; set; }
+        public string AccessToken { get; set; }  = string.Empty;
 
         /// <summary>
         /// workspace_id
@@ -22,7 +22,7 @@ namespace Notion.SDK.Model.Objects
         /// </summary>
         /// <value></value>
         [JsonPropertyName("workspace_id")]
-        public string WorkspaceId { get; set; }
+        public string WorkspaceId { get; set; } = string.Empty;
 
         /// <summary>
         /// workspace_name
@@ -31,7 +31,7 @@ namespace Notion.SDK.Model.Objects
         /// </summary>
         /// <value></value>
         [JsonPropertyName("workspace_name")]
-        public string WorkspaceName { get; set; }
+        public string WorkspaceName { get; set; }  = string.Empty;
 
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Notion.SDK.Model.Objects
         /// </summary>
         /// <value></value>
         [JsonPropertyName("workspace_icon")]
-        public string WorkspaceIcon { get; set; }
+        public string WorkspaceIcon { get; set; } = string.Empty;
 
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Notion.SDK.Model.Objects
         /// </summary>
         /// <value></value>
         [JsonPropertyName("bot_id")]
-        public string BotId { get; set; }
+        public string BotId { get; set; } = string.Empty;
 
         /// <summary>
         /// owner
@@ -60,6 +60,6 @@ namespace Notion.SDK.Model.Objects
         /// </summary>
         /// <value></value>
         [JsonPropertyName("owner")]
-        public object Owner { get; set; }
+        public object? Owner { get; set; }
     }
 }

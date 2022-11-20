@@ -1,6 +1,11 @@
-﻿using System.Net.Http.Headers;
+﻿using System;
+using System.Diagnostics;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace Notion.SDK.Model.Request
@@ -13,7 +18,6 @@ namespace Notion.SDK.Model.Request
 
         public NotionBaseRequest(string token)
         {
-           
             Token = token;
         }
 
@@ -35,40 +39,66 @@ namespace Notion.SDK.Model.Request
                 RequestUri = new Uri(new Uri(ServerUrl), Uri),
                 Method = Method
             };
-
+            JsonSerializerOptions options = new()
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault
+            };
             switch (request.Method.ToString())
             {
                 case "GET":
                     break;
                 default:
-                    request.Content = new StringContent(JsonSerializer.Serialize(this.Content), Encoding.UTF8, ContentType);
+                    request.Content = new StringContent(JsonSerializer.Serialize(this.Content, options), Encoding.UTF8, ContentType);
                     break;
             }
            
             request.Headers.Add("Accept", "*/*");
-            request.Headers.Add("Notion-Version", "2021-08-16");
+            request.Headers.Add("Notion-Version", "2022-06-28");
             request.Headers.Add("Authorization", $"Bearer {Token}");
 
-            var response = await client.SendAsync(request);
-            if (response != null && response.IsSuccessStatusCode)
+            using var response = await client.SendAsync(request);
+            try
             {
-                try
-                {
+                response.EnsureSuccessStatusCode();
+                var content = await response.Content.ReadAsStringAsync();
+                Debug.WriteLine(content);
+                var result = JsonSerializer.Deserialize<TResponse>(content);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                Debug.WriteLine(content);
+                throw new Exception($"response deserialize faild , content: {content}", ex);
+            }
 
-                    using var responseStream = await response.Content.ReadAsStreamAsync();
-                    var authorize = await JsonSerializer.DeserializeAsync<TResponse>(responseStream);
-                    return authorize;
-                }
-                catch (Exception ex)
-                {
-                    var content = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"response deserialize faild , content: {content}", ex);
-                }
-            }
-            else
-            {
-                throw new Exception($"Call Api Faild , code : {response?.StatusCode} , msg: {await response?.Content.ReadAsStringAsync()}");
-            }
+            //if (response != null && response.IsSuccessStatusCode)
+            //{
+            //    try
+            //    {
+
+            //        using var responseStream = await response.Content.ReadAsStreamAsync();
+            //        var result = await JsonSerializer.DeserializeAsync<TResponse>(responseStream);
+            //        return result;
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        var content = await response.Content.ReadAsStringAsync();
+            //        throw new Exception($"response deserialize faild , content: {content}", ex);
+            //    }
+            //}
+            //else
+            //{
+            //    if (response != null)
+            //    {
+            //        HttpContent content = response.Content;
+            //        throw new Exception($"Call Api Faild , code : {response?.StatusCode} , msg: {await content.ReadAsStringAsync()}");
+            //    }
+            //    else
+            //    {
+            //        throw new Exception("response is empty");
+            //    }
+            //}
         }
     }
 }

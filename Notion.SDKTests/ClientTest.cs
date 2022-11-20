@@ -1,4 +1,6 @@
+using System;
 using System.Runtime.InteropServices.ComTypes;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Notion.SDK;
 using Notion.SDK.Model.Request;
@@ -9,14 +11,13 @@ namespace Notion.SDKTests
     [TestClass]
     public class ClientTest
     {
-
-        private static Client client;
+        private NotionClient? client;
 
         [TestInitialize]
         public void Init()
         {
             var token = "secret_SUSksrN3RXQGqyycqXqkMoyUKNb53HDnPHcFsDtsd7v";
-            client = new Client(token);
+            client = new NotionClient(token);
         }
 
 
@@ -25,7 +26,7 @@ namespace Notion.SDKTests
         {
             try
             {
-                var auth = await Client.AuthorizationCodeAsync("e202e8c9-0990-40af-855f-ff8f872b1ec6", "https://example.com/auth/notion/callback");
+                var auth = await new NotionClient("CLIENT_ID", "CLIENT_SECRET").AuthorizationCodeAsync("e202e8c9-0990-40af-855f-ff8f872b1ec6", "https://example.com/auth/notion/callback");
                 Assert.IsNotNull(auth);
             }catch(Exception ex)
             {
@@ -34,17 +35,20 @@ namespace Notion.SDKTests
         }
 
         [TestMethod]
-        public async Task ListDatabaseTest()
+        public async Task SearchTest()
         {
-
-            var request = new ListDatabaseContent() 
+            if (client == null)
             {
-                PageCount = 0,
-                PageSize = 10
+               Assert.Fail();
+                return;
+            }
 
+            var request = new SearchContent() 
+            {
+                PageSize = 10
             };
-            var response =await client.ListDatabasesAsync(request);
-            Assert.AreEqual(typeof(ListDatabaseResponse), response.GetType());
+            var response =await client.SearchAsync(request);
+            Assert.AreEqual(typeof(SearchResponse), response?.GetType());
         }
 
         [TestMethod]

@@ -1,16 +1,24 @@
 using Notion.SDK.Model.Objects;
+using System;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace Notion.SDK.Model.Request
 {
     public class AuthorizationCodeRequest : NotionBaseRequest<AuthorizationCodeContent, AuthorizeObject>
     {
-        public AuthorizationCodeRequest(string code, string redirect_uri) : base("")
+        private readonly string ClientID;
+        private readonly string ClientSecret;
+
+        public AuthorizationCodeRequest(string clientId , string clientSecret,string code, string redirect_uri) : base("")
         {
             this.Content = new AuthorizationCodeContent(code, redirect_uri);
+            this.ClientID = clientId;
+            this.ClientSecret = clientSecret;
         }
 
         protected override string Uri => "oauth/token";
@@ -26,13 +34,12 @@ namespace Notion.SDK.Model.Request
 
             };
             request.Content.Headers.ContentType = new MediaTypeHeaderValue(ContentType);
-
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", $"{ClientID}:{ClientSecret}");
             var response = await client.SendAsync(request);
             if (response != null && response.IsSuccessStatusCode)
             {
                 try
                 {
-
                     using var responseStream = await response.Content.ReadAsStreamAsync();
                     var authorize = await JsonSerializer.DeserializeAsync<AuthorizeObject>(responseStream);
                     return authorize;
@@ -52,7 +59,6 @@ namespace Notion.SDK.Model.Request
 
     public class AuthorizationCodeContent
     {
-
         public AuthorizationCodeContent(string code, string uri)
         {
             Code = code;

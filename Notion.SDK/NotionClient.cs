@@ -3,6 +3,7 @@ using Notion.SDK.Model.Options;
 using Notion.SDK.Model.Request;
 using Notion.SDK.Model.Response;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
@@ -41,12 +42,9 @@ public class NotionClient
         {
             Content = query
         };
-
-
     }
-
  
-    public async Task<SearchResponse?> SearchAsync(SearchContent query)
+    public async Task<SearchResponse> SearchAsync(SearchContent query)
     {  
         // 檢查 Token
         if (string.IsNullOrWhiteSpace(AccessToken))
@@ -72,6 +70,23 @@ public class NotionClient
         var result = await request.ExcuteAsync();
         if (result != null)
             AccessToken = result.AccessToken;
+        return await request.ExcuteAsync();
+    }
+
+    public async Task<CreatePageResponse> CreatePageAsync(string databaseID , Dictionary<string, object> properties)
+    {
+        // 檢查 Token
+        if (string.IsNullOrWhiteSpace(AccessToken))
+        {
+            throw new ArgumentNullException(nameof(AccessToken), "you need login first");
+        }
+
+        var request = new CreatePageRequest(AccessToken, databaseID);
+        if (properties != null)
+        {
+            request.Content!.Properties = properties;
+        }
+      
         return await request.ExcuteAsync();
     }
 }

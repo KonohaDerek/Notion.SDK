@@ -1,10 +1,14 @@
-using System;
-using System.Runtime.InteropServices.ComTypes;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Notion.SDK;
+using Notion.SDK.JsonConverters;
 using Notion.SDK.Model.Request;
 using Notion.SDK.Model.Response;
+using System;
+using System.Collections.Generic;
+using System.Text.Json;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Notion.SDKTests
 {
@@ -48,7 +52,7 @@ namespace Notion.SDKTests
                 PageSize = 10
             };
             var response =await client.SearchAsync(request);
-            Assert.AreEqual(typeof(SearchResponse), response?.GetType());
+            Assert.AreEqual(typeof(SearchResponse), response.GetType());
         }
 
         [TestMethod]
@@ -56,12 +60,73 @@ namespace Notion.SDKTests
 
         }
 
-       
-
-
         [TestMethod]
-        public void CreateDatabaseTest(){
+        public async Task CreateDatabaseTest(){
+            if (client == null)
+            {
+                Assert.Fail();
+                return;
+            }
+            var properties = new Dictionary<string, object> {
+                ["月份"] = new
+                {
+                    select= new
+                    {
+                        name = MonthConverter.ToString(DateTime.Now.Month)
+                    }
+                },
+                ["日期"]=new
+                {
+                    date = new
+                    {
+                        start=DateTime.Now.ToString("yyyy-MM-dd")
+                    }
+                },
+                ["支出內容"] = new
+                {
+                    title = new List<object>
+                    {
+                        new
+                        {
+                            type = "text",
+                            text = new
+                            {
+                                content = "測試",
+                            }
+                        }
+                    }
+                },
+                ["類型"]= new
+                {
+                    multi_select = new List<object> {
+                        new
+                        {
+                            name="飲料"
+                        }
+                    }
+                },
+                ["金額"]= new
+                {
+                    number = 35,
+                },
+            };
+          
+            var actual = JsonSerializer.Serialize(properties);
+            Assert.IsNotNull(actual);
 
+            var request = new CreatePageRequest("", "86da96dd-f3de-4d07-bc6b-1598c40baafe");
+            if (properties != null)
+            {
+                request.Content!.Properties = properties;
+            }
+
+            var reqStr = JsonSerializer.Serialize(request.Content);
+            Assert.IsNotNull(reqStr);
+
+            //var response = await client.CreatePageAsync("86da96dd-f3de-4d07-bc6b-1598c40baafe", properties);
+            //Assert.AreEqual(typeof(CreatePageResponse), response.GetType());
+            //Assert.AreNotEqual("error", response.Object);
+            
         }
 
 

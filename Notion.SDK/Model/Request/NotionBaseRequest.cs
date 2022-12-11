@@ -32,7 +32,7 @@ namespace Notion.SDK.Model.Request
 
         private string Token { get; set; }
 
-        public virtual async Task<TResponse?> ExcuteAsync()
+        public virtual async Task<TResponse> ExcuteAsync()
         {
             HttpRequestMessage request = new()
             {
@@ -63,7 +63,14 @@ namespace Notion.SDK.Model.Request
                 var content = await response.Content.ReadAsStringAsync();
                 Debug.WriteLine(content);
                 var result = JsonSerializer.Deserialize<TResponse>(content);
-                return result;
+                if (result != null)
+                {
+                    return result;
+                }else
+                {
+                    return default!;
+                }
+              
             }
             catch (Exception ex)
             {

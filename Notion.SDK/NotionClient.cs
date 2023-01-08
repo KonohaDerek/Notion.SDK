@@ -1,4 +1,5 @@
-﻿using Notion.SDK.Model.Objects;
+﻿using Newtonsoft.Json.Linq;
+using Notion.SDK.Model.Objects;
 using Notion.SDK.Model.Options;
 using Notion.SDK.Model.Request;
 using Notion.SDK.Model.Response;
@@ -8,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace Notion.SDK;
-public class NotionClient
+public class NotionClient : IDisposable
 {
     [Required]
     private string AccessToken;
@@ -89,4 +90,6 @@ public class NotionClient
       
         return await request.ExcuteAsync();
     }
+
+    public void Dispose() => AccessToken = string.Empty;
 }
